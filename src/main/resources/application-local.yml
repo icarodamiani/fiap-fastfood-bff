@@ -1,0 +1,14 @@
+grpc:
+  client:
+    notification-api:
+      enabled: true
+      address: ${NOTIFICATION_CYBERHUB_URI:static://localhost:9090}
+    customer-api:
+      enabled: true
+      address: ${CUSTOMER_CYBERHUB_URI:static://localhost:9090}
+    threat-bulletins:
+      enabled: true
+      address: ${NOTIFICATION_CYBERHUB_URI:static://localhost:9090}
+
+server:
+  port: 8083

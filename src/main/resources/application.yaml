@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: fiap-fastfood-customer
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+grpc:
+  server:
+    health-service-enabled: true
+  client:
+    order-api:
+      address: dns:///fastfood-order:9090
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    tracking-api:
+      address: dns:///fastfood-tracking:9090
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    product-api:
+      address: dns:///fastfood-product:9090
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+management:
+  endpoint:
+    loggers:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+      show-details: "ALWAYS"
+  endpoints:
+    web:
+      exposure:
+        include: "*"
