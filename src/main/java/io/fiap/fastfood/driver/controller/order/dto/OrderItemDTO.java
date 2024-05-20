@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 
 public record OrderItemDTO(@NotNull String productId,
-                           @NotNull Long amount,
+                           @NotNull Integer amount,
                            @Nullable String quote) {
 
     Optional<String> getQuote() {
@@ -14,7 +14,7 @@ public record OrderItemDTO(@NotNull String productId,
 
     public static final class OrderItemDTOBuilder {
         private @NotNull String productId;
-        private @NotNull Long amount;
+        private @NotNull Integer amount;
         private @Nullable String quote;
 
         private OrderItemDTOBuilder() {
@@ -29,7 +29,7 @@ public record OrderItemDTO(@NotNull String productId,
             return this;
         }
 
-        public OrderItemDTOBuilder withAmount(Long amount) {
+        public OrderItemDTOBuilder withAmount(Integer amount) {
             this.amount = amount;
             return this;
         }

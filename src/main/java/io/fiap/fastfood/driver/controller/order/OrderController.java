@@ -15,8 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +49,7 @@ public class OrderController {
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
-    public Mono<ResponseEntity<OrderDTO>> createOrder(OrderDTO orderDTO) {
+    public Mono<ResponseEntity<OrderDTO>> createOrder(@Validated @RequestBody OrderDTO orderDTO) {
         return orderUseCase.create(mapper.domainFromDto(orderDTO))
             .map(mapper::dtoFromDomain)
             .map(ResponseEntity::ok)
@@ -64,10 +66,9 @@ public class OrderController {
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
-    public Flux<ResponseEntity<OrderDTO>> findOrders(Pageable pageable) {
+    public Flux<OrderDTO> findOrders(Pageable pageable) {
         return orderUseCase.findAll(pageable)
             .map(mapper::dtoFromDomain)
-            .map(ResponseEntity::ok)
             .onErrorMap(e ->
                 new ResponseStatusException(httpStatusExceptionConverter.convert(e), e.getMessage(), e))
             .doOnError(throwable -> LOGGER.error(throwable.getMessage(), throwable));

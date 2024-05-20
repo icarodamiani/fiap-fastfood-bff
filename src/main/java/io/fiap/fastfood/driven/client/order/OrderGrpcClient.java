@@ -45,9 +45,7 @@ public class OrderGrpcClient {
     public Mono<Order> createOrder(Order order) {
         return reactiveStub.withWaitForReady()
             .saveOrder(SaveOrderRequest.newBuilder()
-                .setCreatedAt(toTimestamp(order.createdAt()))
                 .setCustomerId(order.customerId())
-                .setNumber(order.number())
                 .addAllItems(order.items().stream()
                     .map(this::toOrderItemRequest)
                     .collect(Collectors.toList()))
@@ -55,14 +53,13 @@ public class OrderGrpcClient {
                 .build())
             .doOnError(throwable -> LOGGER.error("Failed to open billing day.", throwable))
             .map(response ->
-                Order.OrderBuilder.from(order).withId(response.getId()).build()
+                Order.OrderBuilder.from(order).withId(response.getId()).withNumber(response.getNumber()).build()
             );
     }
 
     private SavePaymentRequest toPaymentRequest(Payment payment) {
         return SavePaymentRequest.newBuilder()
             .setMethod(payment.method())
-            .setDateTime(toTimestamp(payment.dateTime()))
             .setTotal(toDecimal(payment.total()))
             .build();
     }
@@ -71,7 +68,7 @@ public class OrderGrpcClient {
         return SaveOrderItemRequest.newBuilder()
             .setQuote(item.quote())
             .setProductId(item.productId())
-            .setAmount(toDecimal(item.amount()))
+            .setAmount(item.amount())
             .build();
     }
 
@@ -127,7 +124,7 @@ public class OrderGrpcClient {
     private OrderItem toOrderItem(OrderItemResponse response) {
         return OrderItem.OrderItemBuilder.builder()
             .withQuote(response.getQuote())
-            .withAmount(new BigDecimal(response.getAmount().getValue()))
+            .withAmount(response.getAmount())
             .withProductId(response.getProductId())
             .build();
     }

@@ -1,14 +1,14 @@
 grpc:
   client:
-    notification-api:
+    order-api:
       enabled: true
-      address: ${NOTIFICATION_CYBERHUB_URI:static://localhost:9090}
-    customer-api:
+      address: static://localhost:9091
+    tracking-api:
       enabled: true
-      address: ${CUSTOMER_CYBERHUB_URI:static://localhost:9090}
-    threat-bulletins:
+      address: static://localhost:9093
+    product-api:
       enabled: true
-      address: ${NOTIFICATION_CYBERHUB_URI:static://localhost:9090}
+      address: static://localhost:9092
 
 server:
-  port: 8083
+  port: 8080

@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public record PaymentDTO(
     String method,
-    BigDecimal amount) {
+    BigDecimal total) {
 
     public static final class PaymentBuilder {
         private String method;
-        private BigDecimal amount;
+        private BigDecimal total;
 
         private PaymentBuilder() {
         }
@@ -20,7 +20,7 @@ public record PaymentDTO(
         public static PaymentBuilder from(PaymentDTO payment) {
             return PaymentBuilder.builder()
                 .withMethod(payment.method)
-                .withAmount(payment.amount);
+                .withTotal(payment.total);
         }
 
         public PaymentBuilder withMethod(String method) {
@@ -28,13 +28,13 @@ public record PaymentDTO(
             return this;
         }
 
-        public PaymentBuilder withAmount(BigDecimal amount) {
-            this.amount = amount;
+        public PaymentBuilder withTotal(BigDecimal total) {
+            this.total = total;
             return this;
         }
 
         public PaymentDTO build() {
-            return new PaymentDTO(method, amount);
+            return new PaymentDTO(method, total);
         }
     }
 }
