@@ -12,6 +12,8 @@ env:
 
 jobs:
   build:
+    environment:
+      name: dev
     runs-on: ubuntu-latest
     container:
       image: openjdk:17.0.1-jdk-slim
@@ -27,10 +29,12 @@ jobs:
 
       - uses: ./.github/actions/run-build
         with:
-          GH_USERNAME: ${{secrets.GH_USERNAME}}
+          GH_USERNAME: ${{vars.GH_USERNAME}}
           GH_TOKEN: ${{secrets.GH_TOKEN}}
 
   publish:
+    environment:
+      name: dev
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -40,15 +44,16 @@ jobs:
       - uses: ./.github/actions/run-publish
         with:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_PASSWORD: ${{ vars.DOCKER_PASSWORD }}
 
   deploy:
+    environment:
+      name: dev
     needs: [publish]
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/actions/run-deploy
         with:
-          PROFILE: ${{ needs.setup-env.outputs.profile }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           CLUSTER_NAME: ${{ env.CLUSTER_NAME }}

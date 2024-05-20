@@ -5,9 +5,6 @@ inputs:
     required: true
   GH_TOKEN:
     required: true
-  PROFILE:
-    required: false
-    default: 'dev'
   MAVEN_REPO:
     required: false
     default: '.m2/repository'
@@ -34,7 +31,7 @@ runs:
         GH_USERNAME: ${{ inputs.GH_USERNAME }}
         GH_TOKEN: ${{ inputs.GH_TOKEN }}
       run: |
-        ./mvnw ${{ inputs.MAVEN_CLI_OPTS }} ${{ inputs.MAVEN_OPTS }} clean install -U -P ${{ inputs.PROFILE }}
+        ./mvnw ${{ inputs.MAVEN_CLI_OPTS }} ${{ inputs.MAVEN_OPTS }} clean install -U -P dev
 
     - name: Archive Production Artifacts
       uses: actions/upload-artifact@v3
