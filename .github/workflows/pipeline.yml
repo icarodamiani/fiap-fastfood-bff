@@ -1,0 +1,56 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "development" ]
+  workflow_call:
+
+  workflow_dispatch:
+
+env:
+  CLUSTER_NAME: "eks-cluster-fastfood-t4-g86"
+
+jobs:
+  build:
+    runs-on: self-hosted
+    container:
+      image: openjdk:17.0.1-jdk-slim
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/run-build
+        with:
+          GH_USERNAME: ${{secrets.GH_USERNAME}}
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
+
+  publish:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/run-publish
+        with:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  deploy:
+    needs: [publish]
+    runs-on: self-hosted
+    steps:
+      - uses: ./.github/actions/run-deploy
+        with:
+          PROFILE: ${{ needs.setup-env.outputs.profile }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          CLUSTER_NAME: ${{ env.CLUSTER_NAME }}
+          VALUES_PATH: charts/fastfood-bff/values.yaml
+          RELEASE_NAME: ${{ github.GITHUB_REPOSITORY }}

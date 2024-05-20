@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/icarodamiani/fiap-fastfood-customer
+  repository: ghcr.io/icarodamiani/fiap-fastfood-bff
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
@@ -64,16 +64,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-secrets:
-  - name: CUSTOMER_DB_PASSWORD
-    key: customer-db-password
-    secret: customer-db
-
-env:
-  - name: CUSTOMER_DB_USER
-    value: fastfood
-  - name: CUSTOMER_DB_URL
-    value: fastfood-customer
-  - name: CUSTOMER_DB_PORT
-    value: "5443"

@@ -1,9 +1,6 @@
 spring:
   application:
-    name: fiap-fastfood-customer
-
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:local}
+    name: fastfood-bff
 
 grpc:
   server:
