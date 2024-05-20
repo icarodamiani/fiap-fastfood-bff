@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/icarodamiani/fiap-fastfood-bff
+  repository: icarodamiani/fiap-fastfood-bff
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
