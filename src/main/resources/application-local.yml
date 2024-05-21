@@ -1,0 +1,14 @@
+grpc:
+  client:
+    order-api:
+      enabled: true
+      address: static://localhost:9091
+    tracking-api:
+      enabled: true
+      address: static://localhost:9093
+    product-api:
+      enabled: true
+      address: static://localhost:9092
+
+server:
+  port: 8080
