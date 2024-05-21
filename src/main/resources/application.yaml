@@ -12,7 +12,7 @@ grpc:
       keepAliveWithoutCalls: true
       negotiationType: plaintext
     tracking-api:
-      address: dns:///fastfood-tracking:9090
+      address: dns:///fastfood-bff:9090
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       negotiationType: plaintext

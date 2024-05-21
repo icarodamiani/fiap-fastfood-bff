@@ -1,5 +1,5 @@
 name: 'Maven Tests'
-description: 'Runs maven build on the targeted project'
+description: 'Runs maven build on the targeted'
 inputs:
   GH_USERNAME:
     required: true
@@ -16,25 +16,42 @@ inputs:
     default: '-Dmaven.repo.local=.m2/repository'
 
 runs:
-  using: 'composite'
+  using: composite
   steps:
-    - name: Cache Maven packages
-      uses: actions/cache@v3
+    - name: Cache maven packages
+      uses: actions/cache@v4
       with:
         path: ${{ inputs.MAVEN_REPO }}
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
 
+    - name: Install git
+      shell: bash
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y git
+        git config --global user.email "icarodamiani@gmail.com"
+        git config --global user.name "icarodamiani"
+
     - name: Build
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.GH_TOKEN }}
+        GH_USERNAME: ${{ inputs.GH_USERNAME }}
+        GH_TOKEN: ${{ inputs.GH_TOKEN }}
+      run: |
+        ./mvnw ${{ inputs.MAVEN_CLI_OPTS }} clean install -U -P dev
+
+    - name: "Deploy snapshot"
       shell: bash
       env:
         GH_USERNAME: ${{ inputs.GH_USERNAME }}
         GH_TOKEN: ${{ inputs.GH_TOKEN }}
       run: |
-        ./mvnw ${{ inputs.MAVEN_CLI_OPTS }} ${{ inputs.MAVEN_OPTS }} clean install -U -P dev
+        ./mvnw ${{ inputs.MAVEN_CLI_OPTS }} deploy
 
-    - name: Archive Production Artifacts
-      uses: actions/upload-artifact@v3
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v4
       with:
         name: jar
         path: target/*.jar

@@ -160,7 +160,7 @@
 
         <dependency>
             <groupId>io.fiap.fastfood</groupId>
-            <artifactId>fastfood-tracking-api</artifactId>
+            <artifactId>fastfood-bff-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
