@@ -31,9 +31,10 @@ public class SecurityConfiguration {
             .cors(corsSpec -> corsSpec.configurationSource(corsConfigurationSource()))
             .authorizeExchange(exchanges ->
                 exchanges
-                    .matchers(new NegatedServerWebExchangeMatcher(
+                    .matchers(
                         ServerWebExchangeMatchers.pathMatchers("/actuator/**",
-                            "/webjars/**", "/swagger*/**", "/api-docs/**", "/error")))
+                            "/webjars/**", "/swagger*/**", "/api-docs/**", "/error")
+                    )
                     .permitAll()
                     .anyExchange()
                     .authenticated()
