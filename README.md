@@ -147,12 +147,9 @@ aws eks update-kubeconfig --name {CLUSTER_NAME} --region={AWS_REGION}
 4 - 
 ```
 helm upgrade --install fastfood-bff charts/fastfood-bff \
---kubeconfig /home/runner/.kube/config \
+--kubeconfig $HOME/.kube/config \
 --set containers.image=icarodamiani/fastfood-bff \
---set image.tag=latest \
---set database.mongodb.username.value=fastfood} \
---set database.mongodb.host.value={AWS_DOCUMENTDB_HOST} \
---set database.mongodb.password.value={AWS_DOCUMENTDB_PASSWORD}
+--set image.tag=latest
 ```
 
 ## [Coleções Postman](fastfood-api/collection)
