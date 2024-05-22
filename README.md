@@ -3,7 +3,7 @@
 
 ![img.png](challenge/img.png)
 
-# Entregáveis
+## Entregáveis
 
 ![pedido](challenge/pedido.png)
 ![pagamento](challenge/pagamento.png)
@@ -12,7 +12,7 @@
 ![gerenciar produtos](challenge/produtos.png)
 ![acompanhamento de pedidos](challenge/acompanhamento_pedidos.png)
 
-# Recursos e Bibliotecas
+## Recursos e Bibliotecas
 - [x] Java 17
 - [x] Mongo
 - [x] RabbitMQ
@@ -22,7 +22,7 @@
 - [x] JsonPatch
 
 
-# Dicionário de Linguagem Ubíqua
+## Dicionário de Linguagem Ubíqua
 
 Termos utilizados na implementação (Presentes em Código)
 
@@ -33,7 +33,8 @@ Termos utilizados na implementação (Presentes em Código)
 - **Esteira de Pedidos/Order Tracking**: Responsável pelo andamento e monitoramento do estado do pedido.
 - **Funcionário/Employee**: Funcionário do estabelecimento.
 
-# Detalhes da Implementação MVP 2
+
+#
 
 ## [Gerenciamento de produtos](src%2Fmain%2Fjava%2Fio%2Ffiap%2Ffastfood%2Fdriver%2Fcontroller%2Fproduct%2FProductController.java)
 A aplicação dispõe de operações que permitem a inserção, listagem(paginada) e listagem por tipo de produtos.
@@ -118,12 +119,25 @@ O fluxo planejado da aplicação segue os seguintes passos:
 6. Atualização do estado do pedido na Esteira de Pedidos, conforme ordem: WAITING_PAYMENT > PAYMENT_CONFIRMED > PREPARING > READY > FINISHED
 7. Consulta por pedido ou através do relatório de pedidos.
 
-# Início rápido
+## Início rápido
 
 ```shell 
 docker-compose up
 ```
 A aplicação será disponibilizada em [localhost:8080](http://localhost:8080), tendo seu swagger em [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+
+## Dependências
+Este projeto possui depende da existência de artefatos que são gerados por outros repositórios deste projeto, segue o mapeamento:
+
+>https://github.com/icarodamiani/fiap-fastfood-order
+>>io.fiap.fastfood:fastfood-order-api:1.0.0-SNAPSHOT
+
+>https://github.com/icarodamiani/fiap-fastfood-tracking
+>>io.fiap.fastfood:fastfood-tracking-api:1.0.0-SNAPSHOT
+
+>https://github.com/icarodamiani/fiap-fastfood-product
+>>io.fiap.fastfood:fastfood-tracking-api:1.0.1-SNAPSHOT
+
 
 ## Deploy
 
