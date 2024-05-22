@@ -154,7 +154,7 @@ docker login registry-1.docker.io
 ```
 3-
 ```
-docker build . -t icarodamiani/fastfood-order:latest
+docker build . -t icarodamiani/fastfood-bff:latest
 ```
 4 - 
 ```
