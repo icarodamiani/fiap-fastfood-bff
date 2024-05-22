@@ -51,7 +51,8 @@ Não há controle de estoque implementado na versão atual da aplicação.
     }
 
 ## Gerenciamento de Clientes
-Extraído para um cognito, o gerenciamento de clientes não possui operações nesta aplicação.
+Extraído para um cognito, o gerenciamento de clientes não possui operações nesta aplicação. 
+Sendo obrigatório o cadastro do usuário através da UI HOSTED do cognito e a posterior atenticação para uso dos endpoints expostos neste serviço.
 
 ## [Faturamento](src%2Fmain%2Fjava%2Fio%2Ffiap%2Ffastfood%2Fdriver%2Fcontroller%2Fbilling%2FBillingController.java)
 Apenas um esboço de aberturae fechamento de dias contábeis.
@@ -122,56 +123,10 @@ O fluxo planejado da aplicação segue os seguintes passos:
 ```shell 
 docker-compose up
 ```
-Ou, ao rodar em máquinas com processadores arm64:
-```shell
-docker compose --file docker-compose-arm64.yaml up
-```
+
 A aplicação será disponibilizada em [localhost:8080](http://localhost:8080), tendo seu swagger em [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
 
-# Deploy
-O deploy das aplicações é feito e gerenciado através de Helm charts, estes localizados na pasta [charts](charts). Todos os charts apontam para imagens públicas e podem ser deployados em qualquer ordem. No entanto, em razão das dependências entre si, para que as aplicações estabilizem todos devem estar deployados.
-
-### Imagens
-[fastfood-api](charts%2Ffastfood-api): icarodamiani/fastfood-api:0.1.0 </br>
-[payment-mock-api](charts%2Fpayment-mock-api): icarodamiani/payment-mock-api:0.1.0 </br>
-[mongodb](charts%2Fmongodb): bitnami/mongodb </br>
-[rabbitmq](charts%2Frabbitmq): bitnami/rabbitmq
-
-### MongoDB
-```shell
-helm install mongodb bitnami/mongodb -f charts/mongodb/values.yaml
-```
-### RabbitMQ
-```shell
-helm install rabbitmq bitnami/rabbitmq -f charts/rabbitmq/values.yaml
-```
-### Fastfood API
-Para esta api um ingress é criado, expondo a mesma como http://fastfood-api.local. </br>
-
-Configurando ingress:
-Minikube:
-```
-minikube addons enable ingress
-minikube tunnel
-```
-Docker Desktop e outros:
-```
-helm upgrade --install ingress-nginx ingress-nginx \
---repo https://kubernetes.github.io/ingress-nginx \
---namespace ingress-nginx --create-namespace
-```
-
-$${\color{red}Pode ser necessária a inclusão do host no arquivo /etc/hosts ```127.0.0.1 fastfood-api.local```}$$
-
-```shell
-helm install fastfood-api charts/fastfood-api --values charts/fastfood-api/values.yaml
-```
-### Payment Mock API
-```shell
-helm install payment-mock-api charts/payment-mock-api --values charts/payment-mock-api/values.yaml
-```
-
-## [Coleções Postman / Insomnia](fastfood-api/collection)
+## [Coleções Postman](fastfood-api/collection)
 Ambas as coleções estão configuradas para apontar para http://localhost:8080, porém podem ser alteradas as variáveis url para que se adeque a uri/porta escolhia.
 
 ### Postman
