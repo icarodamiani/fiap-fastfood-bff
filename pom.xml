@@ -28,6 +28,26 @@
         <awssdk.version>2.20.7</awssdk.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/icarodamiani/fiap-fastfood-bff.git</connection>
+        <url>https://github.com/icarodamiani/fiap-fastfood-bff.git</url>
+        <developerConnection>scm:git:https://github.com/icarodamiani/fiap-fastfood-bff.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>gh-release</id>
+            <name>releases</name>
+            <url>https://maven.pkg.github.com/icarodamiani/fiap-fastfood-bff</url>
+        </repository>
+        <snapshotRepository>
+            <id>gh-snapshot</id>
+            <name>snapshots</name>
+            <url>https://maven.pkg.github.com/icarodamiani/fiap-fastfood-bff</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
     <repositories>
         <repository>
@@ -154,13 +174,7 @@
 
         <dependency>
             <groupId>io.fiap.fastfood</groupId>
-            <artifactId>fastfood-customer-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.fiap.fastfood</groupId>
-            <artifactId>fastfood-bff-api</artifactId>
+            <artifactId>fastfood-tracking-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
