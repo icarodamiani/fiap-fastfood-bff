@@ -96,3 +96,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+security:
+  oauth2:
+    name: "OIDC_PROVIDER_ISSUER_URI"
+    value: "fastfood"

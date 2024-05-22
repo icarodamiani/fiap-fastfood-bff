@@ -1,7 +1,11 @@
 spring:
   application:
     name: fastfood-bff
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OIDC_PROVIDER_ISSUER_URI:http://localhost:7777/auth/realms/vodafone}
 grpc:
   server:
     health-service-enabled: true
