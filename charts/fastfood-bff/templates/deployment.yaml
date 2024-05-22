@@ -37,8 +37,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: "{{ $security.oidc.name }}"
-              value: "{{ $security.oidc.value }}"
+            - name: "{{ .Valuesse.security.oidc.name }}"
+              value: "{{ .Values.security.oidc.value }}"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
