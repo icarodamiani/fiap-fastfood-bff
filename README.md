@@ -123,8 +123,37 @@ O fluxo planejado da aplicação segue os seguintes passos:
 ```shell 
 docker-compose up
 ```
-
 A aplicação será disponibilizada em [localhost:8080](http://localhost:8080), tendo seu swagger em [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+
+## Deploy
+
+O deploy pode ser realizado através da execução do pipeline "Deploy product" no Github Actions. 
+No entanto, anteriormente a execução, faz-se necessária a configuração do ID e SECRET da AWS nos secrets do repositório. 
+Como o acesso às variáveis e secrets do respositório é limitado ao owner e maintainers, recomendo a execução dos passos do script de deploy localmente com apontamento para a cloud.
+Seguem abaixo os passos:
+
+1 - 
+```
+./mvnw -s .m2/settings.xml clean install -Dmaven.test.skip=true -U -P dev
+```
+2 - 
+```
+docker login registry-1.docker.io
+```
+3 - 
+```
+aws eks update-kubeconfig --name {CLUSTER_NAME} --region={AWS_REGION}
+```
+4 - 
+```
+helm upgrade --install fastfood-bff charts/fastfood-bff \
+--kubeconfig /home/runner/.kube/config \
+--set containers.image=icarodamiani/fastfood-bff \
+--set image.tag=latest \
+--set database.mongodb.username.value=fastfood} \
+--set database.mongodb.host.value={AWS_DOCUMENTDB_HOST} \
+--set database.mongodb.password.value={AWS_DOCUMENTDB_PASSWORD}
+```
 
 ## [Coleções Postman](fastfood-api/collection)
 Ambas as coleções estão configuradas para apontar para http://localhost:8080, porém podem ser alteradas as variáveis url para que se adeque a uri/porta escolhia.
