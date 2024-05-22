@@ -1,12 +1,11 @@
 package io.fiap.fastfood.driver.controller.order.dto;
 
-import com.mongodb.lang.Nullable;
 import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 
 public record OrderItemDTO(@NotNull String productId,
                            @NotNull Integer amount,
-                           @Nullable String quote) {
+                           String quote) {
 
     Optional<String> getQuote() {
         return Optional.ofNullable(quote());
@@ -15,7 +14,7 @@ public record OrderItemDTO(@NotNull String productId,
     public static final class OrderItemDTOBuilder {
         private @NotNull String productId;
         private @NotNull Integer amount;
-        private @Nullable String quote;
+        private String quote;
 
         private OrderItemDTOBuilder() {
         }

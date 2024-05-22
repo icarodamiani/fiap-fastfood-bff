@@ -10,6 +10,7 @@ import io.fiap.fastfood.ReactorOrderServiceGrpc;
 import io.fiap.fastfood.SaveOrderItemRequest;
 import io.fiap.fastfood.SaveOrderRequest;
 import io.fiap.fastfood.SavePaymentRequest;
+import io.fiap.fastfood.driven.core.domain.Page;
 import io.fiap.fastfood.driven.core.domain.model.Order;
 import io.fiap.fastfood.driven.core.domain.model.OrderItem;
 import io.fiap.fastfood.driven.core.domain.model.Payment;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -88,7 +88,7 @@ public class OrderGrpcClient {
         return Decimal.newBuilder().setValue(value.toString()).build();
     }
 
-    public Flux<Order> findAll(Pageable pageable) {
+    public Flux<Order> findAll(Page pageable) {
         return reactiveStub.withWaitForReady()
             .findAllOrders(FindAllOrderRequest.newBuilder()
                 .setPage(pageable.getPageNumber())

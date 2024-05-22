@@ -1,13 +1,13 @@
 package io.fiap.fastfood.driven.core.service;
 
 import io.fiap.fastfood.OrderTrackingStatus;
+import io.fiap.fastfood.driven.core.domain.Page;
 import io.fiap.fastfood.driven.core.domain.model.Order;
 import io.fiap.fastfood.driven.core.domain.model.OrderTracking;
 import io.fiap.fastfood.driven.core.domain.order.port.inbound.OrderUseCase;
 import io.fiap.fastfood.driven.core.domain.order.port.outbound.OrderPort;
 import io.fiap.fastfood.driven.core.domain.tracking.port.outbound.OrderTrackingPort;
 import java.time.LocalDateTime;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,7 +41,7 @@ public class OrderService implements OrderUseCase {
     }
 
     @Override
-    public Flux<Order> findAll(Pageable pageable) {
+    public Flux<Order> findAll(Page pageable) {
         return orderPort.findAll(pageable);
     }
 

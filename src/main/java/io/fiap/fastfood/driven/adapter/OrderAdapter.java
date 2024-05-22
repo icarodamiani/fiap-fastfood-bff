@@ -1,9 +1,9 @@
 package io.fiap.fastfood.driven.adapter;
 
 import io.fiap.fastfood.driven.client.order.OrderGrpcClient;
+import io.fiap.fastfood.driven.core.domain.Page;
 import io.fiap.fastfood.driven.core.domain.model.Order;
 import io.fiap.fastfood.driven.core.domain.order.port.outbound.OrderPort;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,7 +22,7 @@ public class OrderAdapter implements OrderPort {
     }
 
     @Override
-    public Flux<Order> findAll(Pageable pageable) {
+    public Flux<Order> findAll(Page pageable) {
         return orderClient.findAll(pageable);
     }
 

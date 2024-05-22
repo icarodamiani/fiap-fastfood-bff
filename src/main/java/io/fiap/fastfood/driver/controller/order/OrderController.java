@@ -2,6 +2,7 @@ package io.fiap.fastfood.driver.controller.order;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import io.fiap.fastfood.driven.core.domain.Page;
 import io.fiap.fastfood.driven.core.domain.order.mapper.OrderMapper;
 import io.fiap.fastfood.driven.core.domain.order.port.inbound.OrderUseCase;
 import io.fiap.fastfood.driven.core.exception.HttpStatusExceptionConverter;
@@ -12,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -68,8 +69,8 @@ public class OrderController {
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
-    public Flux<OrderDTO> findOrders(Pageable pageable) {
-        return orderUseCase.findAll(pageable)
+    public Flux<OrderDTO> findOrders(@RequestParam Integer pageSize, @RequestParam Integer pageNumber) {
+        return orderUseCase.findAll(new Page(pageSize, pageNumber))
             .map(mapper::dtoFromDomain)
             .onErrorMap(e ->
                 new ResponseStatusException(httpStatusExceptionConverter.convert(e), e.getMessage(), e))
