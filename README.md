@@ -34,8 +34,6 @@ Termos utilizados na implementação (Presentes em Código)
 - **Funcionário/Employee**: Funcionário do estabelecimento.
 
 
-#
-
 ## [Gerenciamento de produtos](src%2Fmain%2Fjava%2Fio%2Ffiap%2Ffastfood%2Fdriver%2Fcontroller%2Fproduct%2FProductController.java)
 A aplicação dispõe de operações que permitem a inserção, listagem(paginada) e listagem por tipo de produtos.
 Não há controle de estoque implementado na versão atual da aplicação.
