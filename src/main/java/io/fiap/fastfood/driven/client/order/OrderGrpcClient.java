@@ -7,10 +7,12 @@ import io.fiap.fastfood.FindAllOrderRequest;
 import io.fiap.fastfood.FindOrderByIdRequest;
 import io.fiap.fastfood.OrderItemResponse;
 import io.fiap.fastfood.ReactorOrderServiceGrpc;
+import io.fiap.fastfood.SaveCustomerRequest;
 import io.fiap.fastfood.SaveOrderItemRequest;
 import io.fiap.fastfood.SaveOrderRequest;
 import io.fiap.fastfood.SavePaymentRequest;
 import io.fiap.fastfood.driven.core.domain.Page;
+import io.fiap.fastfood.driven.core.domain.model.Customer;
 import io.fiap.fastfood.driven.core.domain.model.Order;
 import io.fiap.fastfood.driven.core.domain.model.OrderItem;
 import io.fiap.fastfood.driven.core.domain.model.Payment;
@@ -45,7 +47,7 @@ public class OrderGrpcClient {
     public Mono<Order> createOrder(Order order) {
         return reactiveStub.withWaitForReady()
             .saveOrder(SaveOrderRequest.newBuilder()
-                .setCustomerId(order.customerId())
+                .setCustomer(toCustomerRequest(order.customer()))
                 .addAllItems(order.items().stream()
                     .map(this::toOrderItemRequest)
                     .collect(Collectors.toList()))
@@ -55,6 +57,19 @@ public class OrderGrpcClient {
             .map(response ->
                 Order.OrderBuilder.from(order).withId(response.getId()).withNumber(response.getNumber()).build()
             );
+    }
+
+    private SaveCustomerRequest toCustomerRequest(Customer customer) {
+        if (customer != null) {
+            return SaveCustomerRequest.newBuilder()
+                .setEmail(customer.email())
+                .setName(customer.name())
+                .setPhone(customer.phone())
+                .setVat(customer.vat())
+                .setId(customer.id())
+                .build();
+        }
+        return null;
     }
 
     private SavePaymentRequest toPaymentRequest(Payment payment) {
@@ -95,7 +110,9 @@ public class OrderGrpcClient {
                 .setPageSize(pageable.getPageSize())
                 .build())
             .map(response -> Order.OrderBuilder.builder()
-                .withCustomerId(response.getCustomerId())
+                .withCustomer(Customer.CustomerBuilder.builder()
+                    .withId(response.getCustomerId())
+                    .withVat(response.getCustomerId()).build())
                 .withCreatedAt(toLocalDate(response.getCreatedAt()))
                 .withNumber(response.getNumber())
                 .withItems(response.getItemsList().stream()
@@ -111,7 +128,9 @@ public class OrderGrpcClient {
                 .setId(id)
                 .build())
             .map(response -> Order.OrderBuilder.builder()
-                .withCustomerId(response.getCustomerId())
+                .withCustomer(Customer.CustomerBuilder.builder()
+                    .withId(response.getCustomerId())
+                    .withVat(response.getCustomerId()).build())
                 .withCreatedAt(toLocalDate(response.getCreatedAt()))
                 .withNumber(response.getNumber())
                 .withItems(response.getItemsList().stream()

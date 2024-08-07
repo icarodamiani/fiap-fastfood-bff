@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record OrderDTO(@Nullable String id,
-                       @NotNull String customerId,
+                       @Nullable CustomerDTO customer,
                        @NotNull List<OrderItemDTO> items,
                        @NotNull PaymentDTO payment) {
 
@@ -14,10 +14,13 @@ public record OrderDTO(@Nullable String id,
         return Optional.ofNullable(id());
     }
 
+    Optional<CustomerDTO> getCustomer() {
+        return Optional.ofNullable(customer());
+    }
 
     public static final class OrderDTOBuilder {
         private String id;
-        private @NotNull String customerId;
+        private @Nullable CustomerDTO customer;
         private @NotNull List<OrderItemDTO> items;
         private @NotNull PaymentDTO payment;
 
@@ -33,8 +36,8 @@ public record OrderDTO(@Nullable String id,
             return this;
         }
 
-        public OrderDTOBuilder withCustomerId(String customerId) {
-            this.customerId = customerId;
+        public OrderDTOBuilder withCustomer(CustomerDTO customer) {
+            this.customer = customer;
             return this;
         }
 
@@ -49,7 +52,7 @@ public record OrderDTO(@Nullable String id,
         }
 
         public OrderDTO build() {
-            return new OrderDTO(id, customerId, items, payment);
+            return new OrderDTO(id, customer, items, payment);
         }
     }
 }
