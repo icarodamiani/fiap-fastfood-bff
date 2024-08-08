@@ -46,17 +46,25 @@ public class OrderGrpcClient {
 
     public Mono<Order> createOrder(Order order) {
         return reactiveStub.withWaitForReady()
-            .saveOrder(SaveOrderRequest.newBuilder()
-                .setCustomer(toCustomerRequest(order.customer()))
-                .addAllItems(order.items().stream()
-                    .map(this::toOrderItemRequest)
-                    .collect(Collectors.toList()))
-                .setPayment(toPaymentRequest(order.payment()))
-                .build())
+            .saveOrder(buildRequest(order))
             .doOnError(throwable -> LOGGER.error("Failed to open billing day.", throwable))
             .map(response ->
                 Order.OrderBuilder.from(order).withId(response.getId()).withNumber(response.getNumber()).build()
             );
+    }
+
+    private SaveOrderRequest buildRequest(Order order) {
+        var request = SaveOrderRequest.newBuilder()
+            .addAllItems(order.items().stream()
+                .map(this::toOrderItemRequest)
+                .collect(Collectors.toList()))
+            .setPayment(toPaymentRequest(order.payment()));
+
+        if (order.customer() != null) {
+            request.setCustomer(toCustomerRequest(order.customer()));
+        }
+
+        return request.build();
     }
 
     private SaveCustomerRequest toCustomerRequest(Customer customer) {
@@ -66,7 +74,6 @@ public class OrderGrpcClient {
                 .setName(customer.name())
                 .setPhone(customer.phone())
                 .setVat(customer.vat())
-                .setId(customer.id())
                 .build();
         }
         return null;

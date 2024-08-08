@@ -3,11 +3,11 @@ version: '3.8'
 services:
   mongo:
     image: docker.io/zcube/bitnami-compat-mongodb:5.0
-    container_name: fastfood-order-mongo
+    container_name: fastfood-bff-mongo
     ports:
       - "27017:27017"
     networks:
-      - fastfood-order-network
+      - fastfood-bff-network
     environment:
       MONGODB_USERNAME: common_user
       MONGODB_PASSWORD: password123
@@ -15,17 +15,17 @@ services:
       MONGODB_ROOT_PASSWORD: rootpassword
     volumes:
       - 'mongodb_data:/fastfood'
-##  sqs:
-##    image: softwaremill/elasticmq:1.4.2
-##    container_name: fastfood-order-sqs
-##    ports:
-##      - "9324:9324"
-##      - "9325:9325"
-##    volumes:
-##      - ./sqs-compose.conf:/opt/elasticmq.conf
-##      - sqs_data:/data/db
-##    networks:
-##      - fastfood-order-network
+  sqs:
+    image: softwaremill/elasticmq:1.4.2
+    container_name: fastfood-bff-sqs
+    ports:
+      - "9324:9324"
+      - "9325:9325"
+    volumes:
+      - ./sqs-compose.conf:/opt/elasticmq.conf
+      - sqs_data:/data/db
+    networks:
+      - fastfood-bff-network
 
 volumes:
   mongodb_data:
@@ -34,5 +34,5 @@ volumes:
     driver: local
 
 networks:
-  fastfood-order-network:
+  fastfood-bff-network:
     driver: bridge

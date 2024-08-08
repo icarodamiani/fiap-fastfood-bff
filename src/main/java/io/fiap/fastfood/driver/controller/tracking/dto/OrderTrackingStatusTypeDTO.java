@@ -3,6 +3,7 @@ package io.fiap.fastfood.driver.controller.tracking.dto;
 public enum OrderTrackingStatusTypeDTO {
     WAITING_PAYMENT(1),
     PAYMENT_CONFIRMED(2),
+    PAYMENT_FAILED(7),
     PREPARING(4),
     READY(5),
     FINISHED(3),

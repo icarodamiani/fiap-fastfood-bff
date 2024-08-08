@@ -1,11 +1,16 @@
 spring:
   application:
     name: fastfood-bff
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${OIDC_PROVIDER_ISSUER_URI:https://cognito-idp.us-east-1.amazonaws.com/us-east-1_iMhcesQCy/.well-known/openid-configuration}
+          issuer-uri: ${OIDC_PROVIDER_ISSUER_URI:http://localhost:7777/auth/realms/vodafone}
+          #issuer-uri: ${OIDC_PROVIDER_ISSUER_URI:https://cognito-idp.us-east-1.amazonaws.com/us-east-1_YUMMjIAXc/.well-known/openid-configuration}
 grpc:
   server:
     health-service-enabled: true

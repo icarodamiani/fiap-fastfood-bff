@@ -21,8 +21,8 @@ public class OrderTrackingService implements OrderTrackingUseCase {
     }
 
     @Override
-    public Mono<OrderTracking> findByOrderId(String orderId) {
-        return orderTrackingPort.findByOrderId(orderId);
+    public Mono<OrderTracking> findByOrderNumber(String orderNumber) {
+        return orderTrackingPort.findByOrderNumber(orderNumber);
     }
 
     @Override

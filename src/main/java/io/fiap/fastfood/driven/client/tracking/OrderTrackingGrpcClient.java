@@ -3,7 +3,7 @@ package io.fiap.fastfood.driven.client.tracking;
 
 import com.google.protobuf.Timestamp;
 import io.fiap.fastfood.FindAllOrderTrackingRequest;
-import io.fiap.fastfood.FindOrderTrackingByOrderIdRequest;
+import io.fiap.fastfood.FindOrderTrackingByOrderNumberRequest;
 import io.fiap.fastfood.OrderTrackingRole;
 import io.fiap.fastfood.OrderTrackingStatus;
 import io.fiap.fastfood.ReactorOrderTrackingServiceGrpc;
@@ -38,7 +38,6 @@ public class OrderTrackingGrpcClient {
     public Mono<OrderTracking> createTracking(OrderTracking tracking) {
         return reactiveStub.withWaitForReady()
             .saveOrderTracking(SaveOrderTrackingRequest.newBuilder()
-                .setOrderId(tracking.orderId())
                 .setOrderNumber(tracking.orderNumber())
                 .setOrderStatus(OrderTrackingStatus.valueOf(tracking.orderStatus()))
                 .setOrderDateTime(toTimestamp(LocalDateTime.now()))
@@ -47,7 +46,7 @@ public class OrderTrackingGrpcClient {
             .map(response -> tracking);
     }
 
-    public Flux <OrderTracking> findTracking(String role) {
+    public Flux<OrderTracking> findTracking(String role) {
         return reactiveStub.withWaitForReady()
             .findAllOrderTracking(FindAllOrderTrackingRequest.newBuilder()
                 .setRole(OrderTrackingRole.valueOf(role))
@@ -55,7 +54,6 @@ public class OrderTrackingGrpcClient {
             .map(response -> OrderTracking.OrderTrackingBuilder.builder()
                 .withId(response.getId())
                 .withOrderNumber(response.getOrderNumber())
-                .withOrderId(response.getOrderId())
                 .withOrderDateTime(toLocalDate(response.getOrderDateTime()))
                 .withOrderTimeSpent(response.getTotalTimeSpent())
                 .withRole(response.getRole().name())
@@ -64,15 +62,14 @@ public class OrderTrackingGrpcClient {
             .doOnError(throwable -> LOGGER.error("Failed to open billing day.", throwable));
     }
 
-    public Mono<OrderTracking> findTrackingByOrderId(String orderId) {
+    public Mono<OrderTracking> findTrackingByOrderNumber(String orderNumber) {
         return reactiveStub.withWaitForReady()
-            .findOrderTrackingByOrderId(FindOrderTrackingByOrderIdRequest.newBuilder()
-                .setOrderId(orderId)
+            .findOrderTrackingByOrderNumber(FindOrderTrackingByOrderNumberRequest.newBuilder()
+                .setOrderNumber(orderNumber)
                 .build())
             .map(response -> OrderTracking.OrderTrackingBuilder.builder()
                 .withId(response.getId())
                 .withOrderNumber(response.getOrderNumber())
-                .withOrderId(response.getOrderId())
                 .withOrderDateTime(toLocalDate(response.getOrderDateTime()))
                 .withOrderTimeSpent(response.getTotalTimeSpent())
                 .withRole(response.getRole().name())

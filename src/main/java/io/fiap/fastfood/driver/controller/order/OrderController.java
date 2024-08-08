@@ -1,8 +1,11 @@
 package io.fiap.fastfood.driver.controller.order;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 
 import io.fiap.fastfood.driven.core.domain.Page;
+import io.fiap.fastfood.driven.core.domain.model.Customer;
+import io.fiap.fastfood.driven.core.domain.model.Order;
 import io.fiap.fastfood.driven.core.domain.order.mapper.OrderMapper;
 import io.fiap.fastfood.driven.core.domain.order.port.inbound.OrderUseCase;
 import io.fiap.fastfood.driven.core.exception.HttpStatusExceptionConverter;
@@ -16,8 +19,11 @@ import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +36,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @SecurityRequirement(name = "Bearer Authentication OIDC")
-@RequestMapping(value = "/v1/order", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/orders", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrderController {
     private static final Logger LOGGER = getLogger(OrderController.class);
     private final OrderUseCase orderUseCase;
@@ -44,7 +50,7 @@ public class OrderController {
         this.httpStatusExceptionConverter = httpStatusExceptionConverter;
     }
 
-    @PostMapping(value = "/")
+    @PostMapping
     @Operation(description = "Create a new order.")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
@@ -52,16 +58,16 @@ public class OrderController {
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
-    public Mono<ResponseEntity<OrderDTO>> createOrder(@Validated @RequestBody OrderDTO orderDTO) {
+    public Mono<ResponseEntity<String>> createOrder(@Validated @RequestBody OrderDTO orderDTO) {
         return orderUseCase.create(mapper.domainFromDto(orderDTO))
-            .map(mapper::dtoFromDomain)
+            .map(Order::number)
             .map(ResponseEntity::ok)
             .onErrorMap(e ->
                 new ResponseStatusException(httpStatusExceptionConverter.convert(e), e.getMessage(), e))
             .doOnError(throwable -> LOGGER.error(throwable.getMessage(), throwable));
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(produces = TEXT_EVENT_STREAM_VALUE)
     @Operation(description = "Find orders paginated.")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
@@ -85,7 +91,7 @@ public class OrderController {
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
-    public Mono<ResponseEntity<OrderDTO>> findOrders(String id) {
+    public Mono<ResponseEntity<OrderDTO>> findOrders(@PathVariable String id) {
         return orderUseCase.findById(id)
             .map(mapper::dtoFromDomain)
             .map(ResponseEntity::ok)

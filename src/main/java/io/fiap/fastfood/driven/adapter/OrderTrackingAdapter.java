@@ -22,8 +22,8 @@ public class OrderTrackingAdapter implements OrderTrackingPort {
     }
 
     @Override
-    public Mono<OrderTracking> findByOrderId(String orderId) {
-        return orderTrackingClient.findTrackingByOrderId(orderId);
+    public Mono<OrderTracking> findByOrderNumber(String orderNumber) {
+        return orderTrackingClient.findTrackingByOrderNumber(orderNumber);
     }
 
     @Override

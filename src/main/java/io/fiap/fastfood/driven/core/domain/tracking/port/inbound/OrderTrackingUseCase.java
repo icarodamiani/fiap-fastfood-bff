@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 public interface OrderTrackingUseCase {
     Mono<OrderTracking> create(OrderTracking orderTracking);
 
-    Mono<OrderTracking> findByOrderId(String orderId);
+    Mono<OrderTracking> findByOrderNumber(String orderId);
 
     Flux<OrderTracking> find(String role);
 }

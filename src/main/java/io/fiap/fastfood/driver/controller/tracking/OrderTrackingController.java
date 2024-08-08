@@ -64,7 +64,7 @@ public class OrderTrackingController {
                 .doOnError(throwable -> LOGGER.error(throwable.getMessage(), throwable));
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/{orderNumber}")
     @Operation(description = "Find order by id")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
@@ -72,8 +72,8 @@ public class OrderTrackingController {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
-    public Mono<OrderTrackingDTO> findByOrderId(@PathVariable String orderId) {
-        return orderTrackingUseCase.findByOrderId(orderId)
+    public Mono<OrderTrackingDTO> findByOrderId(@PathVariable String orderNumber) {
+        return orderTrackingUseCase.findByOrderNumber(orderNumber)
                 .map(orderTrackingMapper::dtoFromDomain)
                 .onErrorMap(e ->
                         new ResponseStatusException(httpStatusExceptionConverter.convert(e), e.getMessage(), e))

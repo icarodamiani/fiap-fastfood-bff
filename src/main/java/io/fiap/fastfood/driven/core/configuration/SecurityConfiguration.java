@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                 exchanges
                     .matchers(
                         ServerWebExchangeMatchers.pathMatchers("/actuator/**",
-                            "/webjars/**", "/swagger*/**", "/api-docs/**", "/error")
+                            "/webjars/**", "/swagger*/**", "/*/api-docs/**", "/error")
                     )
                     .permitAll()
                     .anyExchange()
