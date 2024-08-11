@@ -106,4 +106,4 @@ helm upgrade --install fastfood-bff charts/fastfood-bff \
 Ambas as coleções estão configuradas para apontar para http://localhost:8080, porém podem ser alteradas as variáveis url para que se adeque a uri/porta escolhia.
 
 ### Postman
-[Collection JSON](collection%2Ffiap-fasfood.postman_collection.json)
+[Collection JSON](collection%2Ffiap-fasfood.collection.json)
