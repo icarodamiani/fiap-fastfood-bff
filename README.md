@@ -54,7 +54,7 @@ docker-compose up
 A aplicação será disponibilizada em [localhost:8080](http://localhost:8080), tendo seu swagger em [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
 
 ## Dependências
-Este projeto possui depende da existência de artefatos que são gerados por outros repositórios deste projeto, segue o mapeamento:
+Este projeto possui depende da existência de artefatos que são gerados por outros repositórios, segue o mapeamento:
 
 >https://github.com/icarodamiani/fiap-fastfood-order
 >>io.fiap.fastfood:fastfood-order-api:1.0.0-SNAPSHOT
