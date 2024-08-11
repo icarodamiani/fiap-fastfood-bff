@@ -9,6 +9,9 @@ grpc:
     product-api:
       enabled: true
       address: static://localhost:9092
+    customer-api:
+      enabled: true
+      address: dns:///localhost:9096
 
 server:
   port: 8080

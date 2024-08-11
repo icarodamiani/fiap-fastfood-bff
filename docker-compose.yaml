@@ -26,6 +26,18 @@ services:
       - sqs_data:/data/db
     networks:
       - fastfood-bff-network
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "Postgres2024!"
+      POSTGRES_USER: "fastfood"
+      POSTGRES_DB: fastfood-customer
+    networks:
+      - fastfood-bff-network
+    volumes:
+      - ./db/1-create-customer-table.sql:/docker-entrypoint-initdb.d/1-create-customer-table.sql
+    ports:
+      - "5432:5432"
 
 volumes:
   mongodb_data:
